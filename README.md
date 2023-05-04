@@ -16,3 +16,8 @@ This script simply changes the page `<title>` in the Tournament Controller to be
 https://greasyfork.org/en/scripts/465538-melee-event-name-in-enroll-player-modal
 
 This script updates the header at the top of the enroll player modal to prepend the event name, as this information is not otherwise visible on that page.
+
+# PurpleFox Export
+https://greasyfork.org/en/scripts/465540-melee-purplefox-extract
+
+This is a modified version of [Aurelie Violette's Google Chrome extension](https://github.com/AurelieV/gem-extract), used and adapted with permission. It runs on demand on a results entry screen to provide the JSON results data that PurpleFox needs.
