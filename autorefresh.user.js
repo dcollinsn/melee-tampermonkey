@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Melee Autorefresh
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Refresh the list of tournaments, players, or matches every 30 seconds on mtgmelee.
 // @author       Dan Collins <dcollins@batwing.tech>
 // @updateURL    https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/autorefresh.user.js
