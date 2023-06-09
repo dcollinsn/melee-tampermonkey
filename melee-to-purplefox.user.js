@@ -9,6 +9,7 @@
 // @updateURL    https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/melee-to-purplefox.js
 // @downloadURL  https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/melee-to-purplefox.js
 // @match        https://mtgmelee.com/Tournament/Control/*/
+// @match        https://melee.gg/Tournament/Control/*/
 // @icon         https://eor-us.purple-fox.fr/favicon.ico
 // @grant        GM_registerMenuCommand
 // @grant        GM_setClipboard
