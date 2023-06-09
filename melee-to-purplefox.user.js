@@ -1,15 +1,15 @@
 // ==UserScript==
 // @name         Melee PurpleFox Extract
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Extract information about the current Melee round, and format it for PurpleFox.
 // @author       Dan Collins <dcollins@batwing.tech>
 // @author       Aurélie Violette
 // @website      https://github.com/dcollinsn/melee-tampermonkey
 // @updateURL    https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/melee-to-purplefox.js
 // @downloadURL  https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/melee-to-purplefox.js
-// @match        https://mtgmelee.com/Tournament/Control/*/
-// @match        https://melee.gg/Tournament/Control/*/
+// @match        https://mtgmelee.com/Tournament/Control/*
+// @match        https://melee.gg/Tournament/Control/*
 // @icon         https://eor-us.purple-fox.fr/favicon.ico
 // @grant        GM_registerMenuCommand
 // @grant        GM_setClipboard
