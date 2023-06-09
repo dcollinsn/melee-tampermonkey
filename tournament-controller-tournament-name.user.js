@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Melee Event Name in Tournament Controller
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  Add tournament name to the page title on the mtgmelee Tournament Controller.
 // @author       Dan Collins <dcollins@batwing.tech>
 // @updateURL    https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/tournament-controller-tournament-name.user.js
