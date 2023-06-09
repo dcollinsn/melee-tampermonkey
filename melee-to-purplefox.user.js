@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Melee PurpleFox Extract
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.0.1
 // @description  Extract information about the current Melee round, and format it for PurpleFox.
 // @author       Dan Collins <dcollins@batwing.tech>
 // @author       Aurélie Violette
