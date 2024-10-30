@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Melee Auto-Download Printouts
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Automatically downloads the raw HTML of the Melee multi-print pages.
 // @author       Dan Collins <dcollins@batwing.tech>
 // @updateURL    https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/melee-auto-download-printouts.user.js
@@ -9,7 +9,8 @@
 // @website      https://github.com/dcollinsn/melee-tampermonkey
 // @match        https://melee.gg/Tournament/MultiPrint/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mtgmelee.com
-// @grant        none
+// @grant        GM_xmlhttpRequest
+// @connect      self
 // ==/UserScript==
 
 (function() {
@@ -21,47 +22,90 @@
         return filename.replace(/[\s\\/:*?"<>|]/g, '_');
     }
 
-    // Find the td element with class "tournament-name-label"
-    const tdElement = document.querySelector('td.tournament-name-label');
+    // Function to inline any stylesheets
+    async function inlineCSS(htmlContent) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlContent, 'text/html');
+        const asyncQueries = [];
 
-    let filename = 'page.html'; // Default filename
+        // For each stylesheet
+        const stylesheets = doc.querySelectorAll('link[rel="stylesheet"]');
+        stylesheets.forEach((linkElement) => {
+            const href = linkElement.href;
 
-    if (tdElement) {
-        // Get the text content of the td element
-        let tournamentName = tdElement.textContent.trim();
+            // Get the stylesheet
+            const query = new Promise((resolve) => {
+                GM_xmlhttpRequest({
+                    method: 'GET',
+                    url: href,
+                    onload: function(response) {
+                        if (response.status == 200) {
+                            // Insert it in place of the link
+                            const styleElement = doc.createElement('style');
+                            styleElement.type = 'text/css';
+                            styleElement.textContent = response.responseText;
+                            // Callback closes over linkelement from the parent foreach
+                            linkElement.parentNode.replaceChild(styleElement, linkElement);
+                        } else {
+                            console.warn('Failed to fetch CSS from:', href);
+                        }
+                        resolve();
+                    },
+                    onerror: function() {
+                        console.error('Error fetching CSS from:', href);
+                        resolve();
+                    }
+                });
+            });
 
-        // Sanitize the tournament name for use as a filename
-        tournamentName = sanitizeFilename(tournamentName);
+            asyncQueries.push(query);
+        });
 
-        // Set the filename with the sanitized tournament name
-        filename = `${tournamentName}.html`;
-    } else {
-        console.warn('Tournament name not found. Using default filename.');
+        // Wait for annoying async things
+        await Promise.all(asyncQueries);
+
+        // Return the text of the file we want to download
+        return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
     }
 
-    // Get the raw HTML content of the page
-    const htmlContent = document.documentElement.outerHTML;
+    // Main function to execute the download
+    async function downloadPageWithInlinedCSS() {
+        // Find the name of the printout. This is the title of the first
+        // page of the download, which may not be super accurate for
+        // multi-print setups, but it will have at least the event name and
+        // hopefully the round number.
+        const tdElement = document.querySelector('td.tournament-name-label');
 
-    // Create a Blob from the HTML content
-    const blob = new Blob([htmlContent], { type: 'text/html' });
+        let tournamentName = tdElement.textContent.trim();
+        tournamentName = sanitizeFilename(tournamentName);
+        const filename = `${tournamentName}.html`;
 
-    // Create a URL for the Blob
-    const url = URL.createObjectURL(blob);
+        // Get the raw HTML content of the page
+        const htmlContent = document.documentElement.outerHTML;
 
-    // Create a temporary link element
-    const link = document.createElement('a');
-    link.href = url;
+        // Inline CSS into the HTML content
+        const htmlWithInlinedCSS = await inlineCSS(htmlContent);
 
-    // Set the download attribute with the filename
-    link.download = filename;
+        // Create a Blob from the HTML content
+        const blob = new Blob([htmlWithInlinedCSS], { type: 'text/html' });
 
-    // Append the link to the document
-    document.body.appendChild(link);
+        // Create a URL for the Blob
+        const url = URL.createObjectURL(blob);
 
-    // Programmatically click the link to trigger the download
-    link.click();
+        // Create a temporary link element
+        const link = document.createElement('a');
+        link.href = url;
 
-    // Clean up by removing the link and revoking the Blob URL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+        // Set the download attribute with the filename
+        link.download = filename;
+
+        // Create and click a link to execute the attachment download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+    // Execute the main function
+    downloadPageWithInlinedCSS();
 })();
