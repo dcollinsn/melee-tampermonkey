@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Melee Event Name in Enroll Player Modal
+// @name         [Deprecated] Melee Event Name in Enroll Player Modal
 // @namespace    http://tampermonkey.net/
-// @version      1.0.4
-// @description  Show the current tournament name in the header of the "enroll player" modal on mtgmelee.
+// @version      1.0.5
+// @description  This script is no longer required because the functionality is now available automatically in Melee.
 // @author       Dan Collins <dcollins@batwing.tech>
 // @updateURL    https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/enroll-player-tournament-name.user.js
 // @downloadURL  https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/enroll-player-tournament-name.user.js
