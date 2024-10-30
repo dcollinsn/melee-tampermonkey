@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Melee Auto-Download Printouts
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Automatically downloads the raw HTML of the Melee multi-print pages.
 // @author       Dan Collins <dcollins@batwing.tech>
 // @updateURL    https://raw.githubusercontent.com/dcollinsn/melee-tampermonkey/main/melee-auto-download-printouts.user.js
@@ -78,8 +78,9 @@
 
         let tournamentName = tdElement.textContent.trim();
         tournamentName = sanitizeFilename(tournamentName);
-        const filename = `${tournamentName}.html`;
-
+        const timestamp = new Date().toISOString().replace(/[:]/g, "-");
+        const filename = `${tournamentName}-${timestamp}.html`;
+        
         // Get the raw HTML content of the page
         const htmlContent = document.documentElement.outerHTML;
 
