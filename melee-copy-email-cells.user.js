@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Melee.gg - Copy Email Cells
 // @namespace    https://dan.tools/userscripts
-// @version      1.0
+// @version      1.1
 // @description  Make plain email cells in the players table clickable; clicking copies the email to clipboard.
 // @match        https://melee.gg/Tournament/Control/*
 // @run-at       document-idle
@@ -95,6 +95,11 @@
     try {
       await copyText(email);
       flashCopied(td);
+        const row = td.closest('tr');
+        const acknowledged = row?.querySelector('input[type="checkbox"][name="Acknowledged"]');
+        if (acknowledged && !acknowledged.checked && !acknowledged.disabled) {
+            acknowledged.click();
+        }
     } catch {
       // fallback: select for manual copy
       const range = document.createRange();
