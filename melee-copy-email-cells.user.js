@@ -1,7 +1,6 @@
 // ==UserScript==
 // @name         Melee.gg - Copy Email Cells
-// @namespace    https://dan.tools/userscripts
-// @version      1.1
+// @version      1.2
 // @description  Make plain email cells in the players table clickable; clicking copies the email to clipboard.
 // @match        https://melee.gg/Tournament/Control/*
 // @run-at       document-idle
@@ -38,6 +37,10 @@
       padding: 2px 6px;
       border-radius: 4px;
       pointer-events: none;
+    }
+    input[type=number][data-name=FixedTable] {
+      -moz-appearance: textfield;
+      padding: 0;
     }
   `);
 
